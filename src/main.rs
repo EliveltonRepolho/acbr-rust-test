@@ -29,16 +29,16 @@ fn main() {
     let buffer = CString::default();
     let buffer_raw = buffer.into_raw();
 
-    let mut buffer_tamanho: i32 = 0;
-    let buffer_tamanho_reference = &mut buffer_tamanho;
+    let mut buffer_size: i32 = 0;
+    let buffer_size_reference = &mut buffer_size;
 
     let versao: Symbol<Versao> = unsafe { lib.get(CString::new("POS_Versao").unwrap().as_bytes()).unwrap()};
-    println!("versao = {}", versao(buffer_raw, buffer_tamanho_reference));
+    println!("versao = {}", versao(buffer_raw, buffer_size_reference));
 
     let c_string = unsafe { CString::from_raw(buffer_raw) };
     let resutl_string = c_string.into_string().unwrap();
-    println!("buffer = len: {} :: string: {}", resutl_string.len(), resutl_string);
-    println!("buffer_tamanho = {}", buffer_tamanho);
+    println!("buffer_string = len: {} :: string: {}", resutl_string.len(), resutl_string);
+    println!("buffer_size = {}", buffer_size);
 
     let finalizar: Symbol<Finalizar> = unsafe { lib.get(CString::new("POS_Finalizar").unwrap().as_bytes()).unwrap() };
     println!("finalizar = {}", finalizar());
