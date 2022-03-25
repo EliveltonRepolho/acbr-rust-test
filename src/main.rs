@@ -1,47 +1,56 @@
-extern crate libloading;
+use libc::{c_int, size_t, c_char};
+use std::ffi::CString;
+use std::ptr;
+use std::str;
+use std::slice;
+use std::ffi::CStr;
 
-use std::ffi::{CString};
-
-use libloading::{Library, Symbol};
-
-use std::os::raw::c_char;
-
-type Inicializar = extern "system" fn(eArqConfig: *const c_char, eChaveCrypt: *const c_char) -> i32;
-type Finalizar = extern "system" fn() -> i32;
-type Versao = extern "C" fn(sVersao: *mut c_char, esTamanho: *const i32) -> i32;
+#[no_mangle]
+#[link(name = "acbrposprinter64")]
+extern {
+    fn POS_Inicializar(
+        eArqConfig: *const c_char,
+        eChaveCrypt: *const c_char
+    ) -> c_int;
+    fn POS_Finalizar() -> c_int;
+    fn POS_Versao(
+        sVersao: *mut c_char,
+        esTamanho: *mut size_t
+    ) -> c_int;
+}
 
 fn main() {
 
-    let ini_file = CString::new( "abcr_lib/acbrlib.ini").unwrap();
-    let ini_file_pointer = ini_file.as_ptr();
+    let ini_file: CString = CString::new( "abcr_lib/ACBrPosPrinter.ini").unwrap();
+    let chave_crypt: CString = CString::new("").unwrap();
 
-    let chave_crypt = CString::new("").unwrap();
-    let chave_crypt_pointer = chave_crypt.as_ptr();
+    unsafe {
+        let mut ini_file_pointer: *const c_char = ini_file.as_ptr();
+        let mut chave_crypt_pointer: *const c_char = chave_crypt.as_ptr();
 
-    let library_path = "abcr_lib/libacbrposprinter64.so";
-    println!("Loading acbr from {}", library_path);
+        println!("POS_Inicializar exited with code: {}",
+                 unsafe { POS_Inicializar(ini_file_pointer, chave_crypt_pointer) as i32 });
 
-    let lib = unsafe { Library::new(library_path).unwrap() };
+        let mut versao: [c_char; 255] = [0; 255];
+        let mut versao_pointer: *mut c_char = versao.as_mut_ptr();
+        let mut versao_tamanho: size_t = 255;
 
-    let inicializar: Symbol<Inicializar> = unsafe { lib.get(CString::new("POS_Inicializar").unwrap().as_bytes()).unwrap() };
-    println!("inicializar = {}", inicializar(ini_file_pointer, chave_crypt_pointer));
+        println!("POS_Versao exited with code: {}",
+                 unsafe { POS_Versao(versao_pointer, &mut versao_tamanho) as i32 });
 
-    let buffer = CString::default();
-    let buffer_raw = buffer.into_raw();
+        let versao_string = unsafe { CStr::from_ptr(versao_pointer) };
+        let versao_string_slice = str::from_utf8(versao_string.to_bytes()).unwrap();
+        println!("Versao: {}", versao_string_slice);
 
-    let mut buffer_size: i32 = 0;
-    let buffer_size_reference = &mut buffer_size;
+        println!("POS_Finalizar exited with code: {}",
+         unsafe { POS_Finalizar() as i32 });
 
-    let versao: Symbol<Versao> = unsafe { lib.get(CString::new("POS_Versao").unwrap().as_bytes()).unwrap()};
-    println!("versao = {}", versao(buffer_raw, buffer_size_reference));
+        // clear memory
+        for i in 0..255 {
+            versao[i] = 0;
+        }
 
-    let c_string = unsafe { CString::from_raw(buffer_raw) };
-    let resutl_string = c_string.into_string().unwrap();
-    println!("buffer_string = len: {} :: string: {}", resutl_string.len(), resutl_string);
-    println!("buffer_size = {}", buffer_size);
 
-    let finalizar: Symbol<Finalizar> = unsafe { lib.get(CString::new("POS_Finalizar").unwrap().as_bytes()).unwrap() };
-    println!("finalizar = {}", finalizar());
 
+    }
 }
-

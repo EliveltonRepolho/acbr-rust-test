@@ -1,5 +1,5 @@
 /target
 .idea
 old
-abcr_lib/acbrlib.ini
+abcr_lib/*.ini
 *.lock
