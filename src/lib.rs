@@ -22,11 +22,11 @@ extern {
 
 pub fn get_version() -> Option<String> {
 
-    let ini_file: CString = CString::new( "abcr_lib/ACBrPosPrinter.ini").unwrap();
+    let ini_file: CString = CString::new( "lib/ACBrPosPrinter.ini").unwrap();
     let chave_crypt: CString = CString::new("").unwrap();
 
-    let mut ini_file_pointer: *const c_char = ini_file.as_ptr();
-    let mut chave_crypt_pointer: *const c_char = chave_crypt.as_ptr();
+    let ini_file_pointer: *const c_char = ini_file.as_ptr();
+    let chave_crypt_pointer: *const c_char = chave_crypt.as_ptr();
 
     println!("POS_Inicializar exited with code: {}",
              unsafe { POS_Inicializar(ini_file_pointer, chave_crypt_pointer) as i32 });
@@ -53,4 +53,3 @@ pub fn get_version() -> Option<String> {
 
     return Some(versao_string);
 }
-

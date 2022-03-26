@@ -1,7 +1,8 @@
 .idea
 old
 
-abcr_lib/*.ini
+lib
+!lib/.gitkeep
 
 target
 index.node
