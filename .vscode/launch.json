@@ -7,16 +7,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in library 'hello_cargo'",
+            "name": "Debug unit tests in library 'acbr_rust'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
                     "--lib",
-                    "--package=hello_cargo"
+                    "--package=acbr_rust"
                 ],
                 "filter": {
-                    "name": "hello_cargo",
+                    "name": "acbr_rust",
                     "kind": "lib"
                 }
             },
@@ -26,15 +26,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'hello_cargo'",
+            "name": "Debug executable 'acbr_rust'",
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=hello_cargo",
-                    "--package=hello_cargo"
+                    "--bin=acbr_rust",
+                    "--package=acbr_rust"
                 ],
                 "filter": {
-                    "name": "hello_cargo",
+                    "name": "acbr_rust",
                     "kind": "bin"
                 }
             },
@@ -44,16 +44,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in executable 'hello_cargo'",
+            "name": "Debug unit tests in executable 'acbr_rust'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=hello_cargo",
-                    "--package=hello_cargo"
+                    "--bin=acbr_rust",
+                    "--package=acbr_rust"
                 ],
                 "filter": {
-                    "name": "hello_cargo",
+                    "name": "acbr_rust",
                     "kind": "bin"
                 }
             },
@@ -69,7 +69,7 @@
                     "test",
                     "--no-run",
                     "--test=lib_tests",
-                    "--package=hello_cargo"
+                    "--package=acbr_rust"
                 ],
                 "filter": {
                     "name": "lib_tests",

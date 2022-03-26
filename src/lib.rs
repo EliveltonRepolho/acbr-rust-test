@@ -2,20 +2,10 @@ extern crate libc;
 
 use libc::{c_int, size_t, c_char};
 use std::ffi::CString;
-use std::ptr;
 use std::str;
 use std::ffi::CStr;
 
 pub const BUFFER_SIZE: size_t = 255;
-
-#[no_mangle]
-pub extern fn clear_memory(buffer: *mut c_char, size: size_t) {
-    for i in 0..size {
-        unsafe {
-            *buffer.offset(i as isize) = 0;
-        }
-    }
-}
 
 #[link(name = "acbrposprinter64")]
 extern {
@@ -41,11 +31,11 @@ pub fn get_version() -> Option<String> {
     println!("POS_Inicializar exited with code: {}",
              unsafe { POS_Inicializar(ini_file_pointer, chave_crypt_pointer) as i32 });
 
-    ini_file_pointer = ptr::null();
-    chave_crypt_pointer = ptr::null();
+    drop(ini_file);
+    drop(chave_crypt_pointer);
 
     let mut versao: [c_char; 255] = [0; 255];
-    let mut versao_pointer: *mut c_char = versao.as_mut_ptr();
+    let versao_pointer: *mut c_char = versao.as_mut_ptr();
     let mut versao_tamanho: size_t = 255;
 
     println!("POS_Versao exited with code: {}",
@@ -58,8 +48,8 @@ pub fn get_version() -> Option<String> {
     println!("POS_Finalizar exited with code: {}",
              unsafe { POS_Finalizar() as i32 });
 
-    // clear memory
-    clear_memory(versao_pointer, versao_tamanho);
+    drop(versao_pointer);
+    drop(versao_tamanho);
 
     return Some(versao_string);
 }

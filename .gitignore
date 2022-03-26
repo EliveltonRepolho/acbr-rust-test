@@ -1,5 +1,10 @@
-/target
 .idea
 old
+
 abcr_lib/*.ini
-*.lock
+
+target
+index.node
+**/node_modules
+**/.DS_Store
+npm-debug.log*
