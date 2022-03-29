@@ -2,6 +2,20 @@
 name = "acbr_rust"
 version = "0.1.0"
 edition = "2021"
+exclude = ["index.node"]
+
+[lib]
+crate-type = ["rlib", "cdylib"]
 
 [dependencies]
 libc = "0.2"
+num_cpus = "1"
+
+[dependencies.neon]
+version = "0.10"
+default-features = false
+features = ["napi-6"]
+
+[profile.dev]
+rpath = true
+debug = true

@@ -3,7 +3,11 @@
 
 ### Running this app
 - rust app: `cargo run`
+- rust app without having acbr lib in `/usr/lib: `RUSTFLAGS="-C link-args=-Wl,-rpath,$(pwd)/lib/acbr" cargo run`
 - rust unit test: `cargo test`
+
+
+cargo rustc -- --crate-type=cdylib
 
 ### Util references
 

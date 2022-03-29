@@ -2,7 +2,7 @@
 old
 
 lib
-!lib/.gitkeep
+!lib/acbr/.gitkeep
 
 target
 index.node
