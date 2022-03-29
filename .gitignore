@@ -4,6 +4,8 @@ old
 lib
 !lib/acbr/.gitkeep
 
+dist/
+
 target
 index.node
 **/node_modules

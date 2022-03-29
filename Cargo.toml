@@ -5,17 +5,12 @@ edition = "2021"
 exclude = ["index.node"]
 
 [lib]
-crate-type = ["rlib", "cdylib"]
+crate-type = ["cdylib"]
 
 [dependencies]
 libc = "0.2"
 num_cpus = "1"
+node-bindgen = { version = "5.0" }
 
-[dependencies.neon]
-version = "0.10"
-default-features = false
-features = ["napi-6"]
-
-[profile.dev]
-rpath = true
-debug = true
+[build-dependencies]
+node-bindgen = { version = "5.0", features = ["build"] }

@@ -4,17 +4,17 @@
   "description": "",
   "main": "index.node",
   "scripts": {
-    "build": "cargo-cp-artifact -nc index.node -- cargo build --message-format=json-render-diagnostics",
+    "build": "npx electron-build-env nj-cli build",
     "build-debug": "npm run build --",
     "build-release": "npm run build -- --release",
     "install": "npm run build-release",
     "test": "cargo test",
     "dev": "electron ./src/main.js"
   },
-  "author": "",
-  "license": "ISC",
+  "dependencies": {
+    "electron": "^11.5.0"
+  },
   "devDependencies": {
-    "cargo-cp-artifact": "^0.1",
-    "electron": "^17.2.0"
+    "electron-build-env": "^0.2.0"
   }
 }
